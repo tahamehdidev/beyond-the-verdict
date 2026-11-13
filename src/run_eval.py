@@ -23,8 +23,9 @@ from src.evaluate import (
     STATE_NAMES, accuracy, aurc, bootstrap_ci, brier_multiclass, build_policies, ece,
     information_value, per_class_prf, risk_coverage_curve, state_accuracy, state_confusion,
 )
-from src.predict import CLASS_NAMES, FrozenModel, fit_frozen, load_counts, proba_matrix
+from src.predict import CLASS_NAMES, FrozenModel, fit_frozen, load_counts, proba_matrix, rel
 
+PDF_META = {"CreationDate": None}      # no timestamp in PDFs, so reruns are byte-identical
 POLICIES = ["P0_forced", "P1_tau_calibrated", "P2_state_only", "P3_proposed",
             "P4a_conf_matched_to_P2", "P4b_conf_matched_to_P3", "P5_raw_matched_to_P1"]
 POLICY_METRICS = ["coverage", "selective_risk", "unsafe_rate_all", "unsafe_per_answered"]
@@ -183,8 +184,8 @@ def make_figures(preds: pd.DataFrame, tau: float, fig_dir: Path, tag: str = "poo
     fig.tight_layout()
     for ext in ("png", "pdf"):
         p = fig_dir / f"risk_coverage_{tag}.{ext}"
-        fig.savefig(p, dpi=200)
-        written.append(str(p))
+        fig.savefig(p, dpi=200, metadata=PDF_META if str(p).endswith(".pdf") else None)
+        written.append(rel(p))
     plt.close(fig)
 
     # 2. reliability diagram of the calibrated confidence
@@ -203,8 +204,8 @@ def make_figures(preds: pd.DataFrame, tau: float, fig_dir: Path, tag: str = "poo
     fig.tight_layout()
     for ext in ("png", "pdf"):
         p = fig_dir / f"reliability_{tag}.{ext}"
-        fig.savefig(p, dpi=200)
-        written.append(str(p))
+        fig.savefig(p, dpi=200, metadata=PDF_META if str(p).endswith(".pdf") else None)
+        written.append(rel(p))
     plt.close(fig)
 
     # 3. state confusion (rows: gold-derived state, columns: predicted state)
@@ -221,8 +222,8 @@ def make_figures(preds: pd.DataFrame, tau: float, fig_dir: Path, tag: str = "poo
     fig.tight_layout()
     for ext in ("png", "pdf"):
         p = fig_dir / f"state_confusion_{tag}.{ext}"
-        fig.savefig(p, dpi=200)
-        written.append(str(p))
+        fig.savefig(p, dpi=200, metadata=PDF_META if str(p).endswith(".pdf") else None)
+        written.append(rel(p))
     plt.close(fig)
     return written
 

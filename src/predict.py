@@ -8,6 +8,7 @@ Evaluation claims only pass through `FrozenModel.predict`; nothing is fitted on 
 from __future__ import annotations
 
 from dataclasses import dataclass
+from pathlib import Path
 
 import numpy as np
 import pandas as pd
@@ -16,6 +17,15 @@ from src.classifier import Calibrator, cv_predict_proba, fit_final, labels_to_id
 from src.states import FEATURE_NAMES, STATES, Counts, state_from_counts
 
 CLASS_NAMES = ["S", "R", "C", "N"]
+ROOT = Path(__file__).resolve().parents[1]
+
+
+def rel(path) -> str:
+    """Repository-relative path with forward slashes (no machine-specific folders in committed results); falls back to the plain string."""
+    try:
+        return Path(path).resolve().relative_to(ROOT).as_posix()
+    except ValueError:
+        return str(path)
 
 
 def load_counts(path):
@@ -31,7 +41,7 @@ def load_counts(path):
     out["gold"] = out["y"]                               # from here on `gold` is the class index 0..3 (S, R, C, N)
     out["answers_failed"] = out["answers_failed"].astype(int)
     out["no_evidence_answers"] = out["no_evidence_answers"].astype(int)
-    info = {"path": str(path), "n_total": int(len(df)), "n_complete": int(complete.sum()),
+    info = {"path": rel(path), "n_total": int(len(df)), "n_complete": int(complete.sum()),
             "n_incomplete": int((~complete).sum()),
             "n_decomposition_failed": int((df["dec_status"] != "ok").sum()),
             "answers_parse_failed": int(out["answers_failed"].sum()),

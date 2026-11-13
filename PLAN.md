@@ -25,7 +25,9 @@ History of every departure from the proposal or earlier plans: `docs/DEVIATIONS.
 | Error analysis | done: 32 sampled unsafe errors + 4 case studies (`results/error_analysis/`); labels are a single-annotator draft, author review pending |
 | A5 closed-book control | not run (optional) |
 | 6a Pipeline diagram | done: `python -m src.make_diagram` -> `report/figures/pipeline.pdf` and `.png` (values read from the frozen config) |
-| 6b Report, README, zip, upload | not started |
+| 6b README | done (`README.md`; `python -m src.run_eval` verified to reproduce every committed table from the committed counts) |
+| 6c Report | drafted: `report/TahaMehdi_STP1_Report.tex` (numbers generated from `results/`; audit in `docs/NUMBER_AUDIT.md`); not yet compiled; page count unverified |
+| 6d Zip, upload | not started |
 | 7 Proposal honesty fix | not started (user will recheck the proposal first) |
 | Tests | 131 pass (`python -m pytest -q`) |
 
@@ -40,8 +42,8 @@ History of every departure from the proposal or earlier plans: `docs/DEVIATIONS.
 1. **You commit and push** the evaluation outputs, error analysis, clean-up and docs (conventional commit; see the commit message offered in chat).
 2. **Review the error labels** (`results/error_analysis/labels.csv`, `worksheet.md`); change any you disagree with and re-run `python -m src.error_summary`.
 3. ~~Pipeline diagram~~ done (`report/figures/pipeline.pdf`); re-run `python -m src.make_diagram` if the config ever changes.
-4. **README** (environment, data source/licence/how to obtain, run commands, config and seeds, metric definitions, limitations, what is not included).
-5. **Report** `TahaMehdi_STP1_Report.tex` (ACM Large 1-column, `\documentclass[acmlarge]{acmart}`, same preamble as the proposal, `report/refs.bib` from the proposal), 4-6 pages excluding references/appendix, the 8 required sections, compiled to PDF on Overleaf. Page budget: 1 topic 0.4, 2 objective 0.5, 3 designs + figure 0.9, 4 data/setup 0.7, 5 results + mechanism check 1.5, 6 errors/limitations/ethics 1.2, 7 reproducibility + contribution 0.3.
+4. ~~README~~ done.
+5. ~~Report draft~~ done; remaining: compile on Overleaf, check 4-6 pages, your read-through and edits. **Report** `TahaMehdi_STP1_Report.tex` (ACM Large 1-column, `\documentclass[acmlarge]{acmart}`, same preamble as the proposal, `report/refs.bib` from the proposal), 4-6 pages excluding references/appendix, the 8 required sections, compiled to PDF on Overleaf. Page budget: 1 topic 0.4, 2 objective 0.5, 3 designs + figure 0.9, 4 data/setup 0.7, 5 results + mechanism check 1.5, 6 errors/limitations/ethics 1.2, 7 reproducibility + contribution 0.3.
 6. **Number audit:** every numeral in the .tex checked against `results/`.
 7. **Package:** `TahaMehdi_STP1_Code.zip` via `git archive` from the final tag/commit (no `data/raw`, no `.venv`, `cache/` only if small), secrets scan, fresh-folder test (unzip, run tests, rerun the evaluation from `results/` counts).
 8. **Upload** `TahaMehdi_STP1_Report.tex`, `TahaMehdi_STP1_Report.pdf`, `TahaMehdi_STP1_Code.zip` by about 20:00 Sunday.

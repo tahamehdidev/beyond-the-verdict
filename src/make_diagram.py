@@ -132,7 +132,7 @@ def main() -> int:
 
     out = ROOT / "report" / "figures"
     out.mkdir(parents=True, exist_ok=True)
-    fig.savefig(out / "pipeline.pdf", bbox_inches="tight", pad_inches=0.05)
+    fig.savefig(out / "pipeline.pdf", bbox_inches="tight", pad_inches=0.05, metadata={"CreationDate": None})
     fig.savefig(out / "pipeline.png", dpi=220, bbox_inches="tight", pad_inches=0.05)
     print("wrote", out / "pipeline.pdf")
     return 0
