@@ -72,7 +72,7 @@ Variants tried:
 ## Post-freeze changes (after tag `stp1-frozen`, 14 Nov 2026)
 None of these changes a model, prompt, parameter or reported number.
 1. `src/run_eval.py` and `tests/test_run_eval.py`: k-mismatch guard fixed (see "Post-freeze code fix and first evaluation").
-2. New analysis scripts added after the tag: `src/error_analysis.py`, `src/error_summary.py`, `src/reference_checks.py` (read-only; they only read results and caches).
+2. New analysis scripts added after the tag: `src/error_analysis.py`, `src/error_summary.py`, `src/reference_checks.py` (read-only; they only read results and caches) and `src/make_diagram.py` (draws `report/figures/pipeline.pdf/png` from the frozen config values; no data).
 3. `config.yaml`: comments only (header now says the file is frozen; stale "TBD" wording removed). All values unchanged.
 4. `tests/test_pipeline.py` and `tests/test_run_eval.py`: tests no longer depend on the live config values (k and frozen flag are set inside the tests); `tests/test_tune.py` added.
 5. Documentation refreshed (`PLAN.md` v5, `docs/*`, `results/ablations_status.csv` added).

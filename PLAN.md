@@ -24,7 +24,8 @@ History of every departure from the proposal or earlier plans: `docs/DEVIATIONS.
 | 5 Results on real data | done: `python -m src.run_eval` -> `results/tables/`, `results/figures/`, `results/eval_final/` |
 | Error analysis | done: 32 sampled unsafe errors + 4 case studies (`results/error_analysis/`); labels are a single-annotator draft, author review pending |
 | A5 closed-book control | not run (optional) |
-| 6 Diagram, report, README, zip, upload | not started |
+| 6a Pipeline diagram | done: `python -m src.make_diagram` -> `report/figures/pipeline.pdf` and `.png` (values read from the frozen config) |
+| 6b Report, README, zip, upload | not started |
 | 7 Proposal honesty fix | not started (user will recheck the proposal first) |
 | Tests | 131 pass (`python -m pytest -q`) |
 
@@ -38,7 +39,7 @@ History of every departure from the proposal or earlier plans: `docs/DEVIATIONS.
 ## 3. Remaining steps, in order (about 11-14 h of work)
 1. **You commit and push** the evaluation outputs, error analysis, clean-up and docs (conventional commit; see the commit message offered in chat).
 2. **Review the error labels** (`results/error_analysis/labels.csv`, `worksheet.md`); change any you disagree with and re-run `python -m src.error_summary`.
-3. **Pipeline diagram** (baseline and proposed labelled; mechanism marked) -> `report/figures/`.
+3. ~~Pipeline diagram~~ done (`report/figures/pipeline.pdf`); re-run `python -m src.make_diagram` if the config ever changes.
 4. **README** (environment, data source/licence/how to obtain, run commands, config and seeds, metric definitions, limitations, what is not included).
 5. **Report** `TahaMehdi_STP1_Report.tex` (ACM Large 1-column, `\documentclass[acmlarge]{acmart}`, same preamble as the proposal, `report/refs.bib` from the proposal), 4-6 pages excluding references/appendix, the 8 required sections, compiled to PDF on Overleaf. Page budget: 1 topic 0.4, 2 objective 0.5, 3 designs + figure 0.9, 4 data/setup 0.7, 5 results + mechanism check 1.5, 6 errors/limitations/ethics 1.2, 7 reproducibility + contribution 0.3.
 6. **Number audit:** every numeral in the .tex checked against `results/`.
