@@ -1,0 +1,13 @@
+subset,gold_derived_state,pred_Supports,pred_Refutes,pred_Mixed,pred_Insufficient
+pooled,Supports,72,4,36,89
+pooled,Refutes,90,61,75,215
+pooled,Mixed,15,4,7,24
+pooled,Insufficient,11,6,3,37
+dev,Supports,45,1,15,33
+dev,Refutes,45,28,39,88
+dev,Mixed,8,3,4,13
+dev,Insufficient,6,2,3,17
+train_heldout,Supports,27,3,21,56
+train_heldout,Refutes,45,33,36,127
+train_heldout,Mixed,7,1,3,11
+train_heldout,Insufficient,5,4,0,20

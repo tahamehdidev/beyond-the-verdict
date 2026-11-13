@@ -1,0 +1,67 @@
+{
+  "frozen_config": {
+    "k": 3,
+    "m": 2,
+    "classifier": "gradient_boosting",
+    "calibration": "isotonic",
+    "tau": 0.25,
+    "prompt_versions": {
+      "decompose": "v2",
+      "answer": "v2"
+    },
+    "model_digest": "845dbda0ea48ed749caafd9e6037047aa19acfcfd82e704d7ca97d631a0b697e"
+  },
+  "tuning_claims_used": 400,
+  "tuning_cv_splits": 5,
+  "evaluation_claims": {
+    "dev": 350,
+    "train_heldout": 399
+  },
+  "load_info": {
+    "tuning": {
+      "path": "results/tuning_k3/counts.csv",
+      "n_total": 400,
+      "n_complete": 400,
+      "n_incomplete": 0,
+      "n_decomposition_failed": 0,
+      "answers_parse_failed": 0,
+      "answers_no_evidence": 0,
+      "k": [
+        "3"
+      ]
+    },
+    "eval": {
+      "path": "results/eval/counts.csv",
+      "n_total": 350,
+      "n_complete": 350,
+      "n_incomplete": 0,
+      "n_decomposition_failed": 0,
+      "answers_parse_failed": 0,
+      "answers_no_evidence": 0,
+      "k": [
+        "3"
+      ]
+    },
+    "eval_train": {
+      "path": "results/eval_train/counts.csv",
+      "n_total": 400,
+      "n_complete": 399,
+      "n_incomplete": 1,
+      "n_decomposition_failed": 1,
+      "answers_parse_failed": 0,
+      "answers_no_evidence": 0,
+      "k": [
+        "3"
+      ]
+    }
+  },
+  "figures": [
+    "results/figures/risk_coverage_pooled.png",
+    "results/figures/risk_coverage_pooled.pdf",
+    "results/figures/reliability_pooled.png",
+    "results/figures/reliability_pooled.pdf",
+    "results/figures/state_confusion_pooled.png",
+    "results/figures/state_confusion_pooled.pdf"
+  ],
+  "note": "Model-level proxy results on a pilot slice. They do not establish any benefit for human users."
+}

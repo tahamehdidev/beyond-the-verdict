@@ -167,3 +167,25 @@ def test_main_refuses_when_not_frozen(monkeypatch):
     monkeypatch.setattr("src.run_eval.load_config", lambda: cfg)
     with pytest.raises(RuntimeError, match="frozen"):
         main()
+
+
+def test_main_accepts_matching_k_and_rejects_mismatch(monkeypatch, tmp_path):
+    """load_counts reports k as a list of strings; main must compare it with the frozen integer k."""
+    import src.run_eval as RE
+    cfg = frozen_cfg(); cfg["retrieval"]["k"] = 3
+    monkeypatch.setattr(RE, "load_config", lambda: cfg)
+    tune, dev, tr = synthetic(120, 1, "tune"), synthetic(60, 2, "dev"), synthetic(60, 3, "tr")
+
+    def fake_load(path):
+        df = {"tuning": tune, "eval": dev, "eval_train": tr}[Path(path).parent.name.split("_k")[0]]
+        return df, {"path": str(path), "n_total": len(df), "n_complete": len(df), "n_incomplete": 0,
+                    "n_decomposition_failed": 0, "answers_parse_failed": 0, "answers_no_evidence": 0, "k": fake_load.k}
+
+    monkeypatch.setattr(RE, "load_counts", fake_load)
+    monkeypatch.setattr(RE, "ROOT", tmp_path)
+    cfg["paths"]["results"] = "results"
+    fake_load.k = ["5"]
+    with pytest.raises(RuntimeError, match="frozen k"):
+        RE.main()
+    fake_load.k = ["3"]
+    assert RE.main() == 0

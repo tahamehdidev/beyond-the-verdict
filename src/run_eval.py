@@ -320,7 +320,7 @@ def main() -> int:
     dev_df, dev_info = load_counts(counts_path("eval", cfg))
     tr_df, tr_info = load_counts(counts_path("eval_train", cfg))
     for nm, info in (("tuning", tune_info), ("eval", dev_info), ("eval_train", tr_info)):
-        if info["k"] not in (["unknown"], [k]):
+        if info["k"] not in (["unknown"], [str(k)]):
             raise RuntimeError(f"{nm} counts were produced with k={info['k']} but the frozen k is {k}")
     results = ROOT / cfg["paths"]["results"]
     summary = evaluate_all(tune_df, {"dev": dev_df, "train_heldout": tr_df}, cfg, results / "eval_final",
