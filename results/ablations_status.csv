@@ -12,3 +12,4 @@ Prompt paraphrase robustness,not run,,
 Evidence recall against gold sources,not run,,proposed for the main project
 Multiple seeds / repeated LLM runs,not run,,temperature 0 with fixed seed; LLM outputs are deterministic per cache key
 Human evaluation or user study,not run,,out of scope for STP1; no user benefit is claimed
+Post-hoc leakage scan of retrieved snippets (fact-checking markers),run (exploratory; lower bound),results/leakage_check.json,10 of 749 evaluation claims; the blocklist missed pages such as Health Feedback claim reviews; nothing changed after the freeze

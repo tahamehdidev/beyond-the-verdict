@@ -48,7 +48,7 @@ Fact-checking pipelines that always return a verdict hide missing or conflicting
 
 \runin{Intended users and who is affected.} Intended users, as in the surveyed human-centered fact-checking work~\cite{nakov2021}, are people who must judge a model-produced verdict before relying on it: junior fact-checkers, journalists, media-literacy students and moderators. Affected people also include those whose claims are labelled, and readers downstream of any published check. The decision the output may inform is \emph{accept, check further, or escalate}. This pilot studies the model component only; no users took part.
 
-\runin{Context and out-of-scope use.} English claims from a fixed public benchmark, with a static evidence store. The system is decision support. It should not be used as an authority, for automated moderation, or on the sensitive topics that were excluded from the study (Section~\ref{sec:data}).
+\runin{Context and out-of-scope use.} English claims from a fixed public benchmark with a static evidence store. The system is decision support, not an authority; it should not be used for automated moderation or on the sensitive topics excluded here (Section~\ref{sec:data}).
 
 %==========================================================================
 \section{Human-Centered Objective and Design Rationale}\label{sec:objective}
@@ -64,7 +64,7 @@ Fact-checking pipelines that always return a verdict hide missing or conflicting
 %==========================================================================
 \begin{figure}[t]
   \centering
-  \includegraphics[width=0.97\linewidth]{figures/pipeline.pdf}
+  \includegraphics[width=0.88\linewidth]{figures/pipeline.pdf}
   \caption{Pipeline. Stages 1--5 are shared. The \textbf{baseline} (blue) always shows the verdict; the \textbf{proposed design} (orange) adds the evidence state (stage 6) and the abstention rule, which is the human-centered mechanism.}
   \label{fig:pipeline}
 \end{figure}
@@ -73,14 +73,14 @@ Fact-checking pipelines that always return a verdict hide missing or conflicting
 
 \runin{Evidence state (stage 6).} With $\textit{sup}=$ true-frame Yes $+$ false-frame No and $\textit{ref}=$ true-frame No $+$ false-frame Yes: \evs{Supports} if $\textit{sup}\ge m$ and $\textit{ref}<m$; \evs{Refutes} if $\textit{ref}\ge m$ and $\textit{sup}<m$; \evs{Mixed} if both $\ge m$; otherwise \evs{Insufficient}, with $m=\chosenM$ (chosen on the tuning set).
 
-\runin{Baseline and proposed design.} The \textbf{baseline (P0)} is the shared pipeline with a forced verdict for every claim. The \textbf{proposed design (P3)} withholds the verdict if $c<\tau$ ($\tau=\chosenTau$) \emph{or} the state is \evs{Mixed}/\evs{Insufficient}, and otherwise shows the verdict with its state. Task, claims, classifier and counts are identical, so differences come from the mechanism. Mechanism-check controls on the same predictions: P1 confidence only, P2 state only, and P4a/P4b, confidence thresholds chosen (without labels) to withhold exactly as many claims as P2/P3. Expected effect: P3 trades coverage for fewer wrong decisive verdicts, and P2 should beat P4a if the state carries information that confidence lacks.
+\runin{Baseline and proposed design.} The \textbf{baseline (P0)} is the shared pipeline with a forced verdict for every claim. The \textbf{proposed design (P3)} withholds the verdict if $c<\tau$ ($\tau=\chosenTau$) \emph{or} the state is \evs{Mixed}/\evs{Insufficient}, and otherwise shows the verdict with its state. Task, claims, classifier and counts are identical, so differences come from the mechanism. Controls on the same predictions: P1 confidence only, P2 state only, and P4a/P4b, confidence thresholds chosen (without labels) to withhold as many claims as P2/P3. Expected effect: P3 trades coverage for fewer wrong decisive verdicts, and P2 should beat P4a if the state carries information that confidence lacks.
 
 %==========================================================================
 \section{Data and Experimental Setup}\label{sec:data}
 %==========================================================================
 \runin{Data and licence.} AVeriTeC~\cite{schlichtkrull2023,schlichtkrull2024}, CC BY-NC 4.0, used here for non-commercial coursework and not redistributed (source, files and SHA-256 hashes: \texttt{data/SOURCES.md}). Only dev claims and train claims 0--999 with their stores were downloaded; train claims 1000--3067 are reserved untouched for the main project and a test enforces it.
 
-\runin{Preprocessing and leakage control.} A fixed keyword filter, written before any output, removes sensitive or ill-suited claims (electoral/partisan politics, religion, active armed conflict, personal medical advice, hate/violence, media-dependent and non-English claims): dev keeps \exclKeptDev{} of \exclTotalDev{} claims and train 0--999 keeps \exclKeptTrain{} of \exclTotalTrain{}. The filter is deliberately broad, so some benign claims are lost. The stores have no date field, so documents whose URL carries a date after the claim date are dropped, and fact-checking domains are blocklisted. This is an imperfect control.
+\runin{Preprocessing and leakage control.} A fixed keyword filter, written before any output, removes sensitive or ill-suited claims (electoral/partisan politics, religion, active armed conflict, personal medical advice, hate/violence, media-dependent and non-English claims): dev keeps \exclKeptDev{} of \exclTotalDev{} claims and train 0--999 keeps \exclKeptTrain{} of \exclTotalTrain{}. The filter is deliberately broad, so some benign claims are lost. The stores have no date field, so documents whose URL carries a date after the claim date are dropped, and fact-checking domains are blocklisted. The control is imperfect: a post-hoc scan (\texttt{src/leakage\_check.py}) found fact-checking pages that the blocklist missed in the snippets of at least \leakClaims{} of \nPool{} evaluation claims (\leakShare\%, a lower bound); nothing was changed after the freeze.
 
 \runin{Splits and size.} Stratified, seeded, disjoint (Table~\ref{tab:setup}). Tuning uses \nTune{} train claims. The evaluation set pools \nDev{} dev claims with \nTrain{} held-out train claims (\nTrainSampled{} sampled; one failed decomposition, Section~\ref{sec:limits}) to give the rare classes more claims: \nPool{} claims, below the proposal's planned scale.
 
@@ -93,21 +93,14 @@ Fact-checking pipelines that always return a verdict hide missing or conflicting
 
 \runin{Model and settings.} Ollama build of Qwen2.5-7B-Instruct (Q4\_K\_M, digest prefix \modelDigest{}), temperature 0, seed 1, context 4096, answers constrained to a JSON schema, up to three attempts, all calls cached. Prompts are frozen at version v2 (\texttt{docs/PROMPTS.md}). Runs used one laptop GPU (8~GB).
 
-\runin{Tuning, freeze and protocol.} Everything adjustable was chosen on the tuning claims only, by fixed rules in \texttt{docs/DESIGN\_LOCK.md}: $k\in\{3,5,8\}$ by cross-validated macro-F1 of logistic regression (\chosenK; a near-tie, \tuneFoneLRthree{} vs.\ \tuneFoneLRfive{} for $k=3$ vs.\ 5, applied literally); classifier by macro-F1 (\chosenClf); $m$ by state accuracy (\chosenM); calibration by expected calibration error (ECE) on cross-fitted predictions (isotonic \tuneECEiso{}, temperature \tuneECEtemp{}, none \tuneECEnone{}); and $\tau=\chosenTau$, the largest grid value that still answers at least half of the tuning claims. The configuration was committed and tagged (\texttt{stp1-frozen}) before any evaluation claim was run. Seeds, versions and commands are in the README.
+\runin{Tuning, freeze and protocol.} Everything adjustable was chosen on the tuning claims only, by fixed rules in \texttt{docs/DESIGN\_LOCK.md}: $k\in\{3,5,8\}$ by cross-validated macro-F1 of logistic regression (\chosenK; a near-tie, \tuneFoneLRthree{} vs.\ \tuneFoneLRfive{} for $k=3$ vs.\ 5, applied literally); classifier by macro-F1 (\chosenClf); $m$ by state accuracy (\chosenM); calibration by expected calibration error (ECE) on cross-fitted predictions (isotonic \tuneECEiso{} vs.\ temperature \tuneECEtemp{}); and $\tau=\chosenTau$, the largest grid value that still answers at least half of the tuning claims. The configuration was committed and tagged (\texttt{stp1-frozen}) before any evaluation claim was run.
 
 %==========================================================================
 \section{Evaluation Metrics, Results and Mechanism Check}\label{sec:eval}
 %==========================================================================
 \runin{Metrics (fixed before results).} \emph{Technical:} accuracy; macro-F1 over four classes (a class never predicted scores 0); multiclass Brier score; ECE with 15 bins; state accuracy against the state implied by the gold label (S$\to$Supports, R$\to$Refutes, C$\to$Mixed, N$\to$Insufficient). \emph{Human-centered proxies:} an \emph{unsafe error} is a decisive verdict (S or R, not withheld) that differs from gold; \emph{coverage} is the share of claims answered; \emph{selective risk}~\cite{geifman2017} is the four-way error rate among answered claims. \emph{Information value:} AUROC for predicting ``verdict correct'' from logit$(c)$ alone versus logit$(c)$ plus the state (10-fold cross-validation; paired bootstrap of the difference). Intervals are 95\% percentile bootstrap intervals over claims (\bootN{} resamples). Conclusions are checked on dev-only and train-held-out subsets.
 
-\runin{Technical performance.} The verdict classifier is weak (Table~\ref{tab:tech}). Pooled accuracy is \accPool{} (always answering R would score \majorityAcc{}, but the classifier is class-balanced and is judged by macro-F1 \mfPool{}); the rare classes are over-predicted (\predC{} predictions for \nPoolC{} C claims; F1 \foneC{} for C and \foneN{} for N). State accuracy is \stateAccPool{}. Calibration works: ECE falls from \eceRawPool{} to \eceCalPool{}. Dev claims score higher than train held-out claims (macro-F1 \mfDev{} vs.\ \mfTrain{}); the pooled number is reported as the headline.
-
-\begin{table}[t]
-  \centering\small
-  \caption{Technical metrics on the evaluation claims (baseline classifier, no abstention).}
-  \label{tab:tech}
-  \input{generated/tab_technical}
-\end{table}
+\runin{Technical performance.} The verdict classifier is weak (Table~\ref{tab:tech}, Appendix~\ref{app:extra}). Pooled accuracy is \accPool{} (always answering R would score \majorityAcc{}, but the classifier is class-balanced and is judged by macro-F1 \mfPool{}); the rare classes are over-predicted (\predC{} predictions for \nPoolC{} C claims; F1 \foneC{} for C and \foneN{} for N). State accuracy is \stateAccPool{}. Calibration works: ECE falls from \eceRawPool{} to \eceCalPool{}. Dev claims score higher than train held-out claims (macro-F1 \mfDev{} vs.\ \mfTrain{}).
 
 \runin{Baseline versus proposed design.} Withholding lowers unsafe errors per claim from \unsafePZero\% (P0) to \unsafePThree\% (P3), a difference of \dUnsafeThreeZero{} points (95\% CI \dUnsafeThreeZeroLo{} to \dUnsafeThreeZeroHi{}); the same direction holds in the dev subset (\dUnsafeThreeZeroDev{} points) and the train subset (\dUnsafeThreeZeroTrain{}). The cost is large: P3 answers only \covPThree\% of claims (\covPThreeDev\% dev, \covPThreeTrain\% train). Selective risk falls from \riskPZero\% to \riskPThree\% (Table~\ref{tab:pol}). This is a trade-off, not a free gain.
 
@@ -120,7 +113,7 @@ Fact-checking pipelines that always return a verdict hide missing or conflicting
 
 \begin{figure}[t]
   \centering
-  \includegraphics[width=0.62\linewidth]{figures/risk_coverage_pooled.pdf}
+  \includegraphics[width=0.56\linewidth]{figures/risk_coverage_pooled.pdf}
   \caption{Risk--coverage on the pooled evaluation claims. The curve orders claims by calibrated confidence; markers are the policies. State-only (P2) and the proposed policy (P3) lie above the confidence curve at their coverage.}
   \label{fig:rc}
 \end{figure}
@@ -134,36 +127,29 @@ Fact-checking pipelines that always return a verdict hide missing or conflicting
   \input{generated/tab_mechanism}
 \end{table}
 
-\runin{What this can and cannot establish.} It shows, at model level and on this slice, that withholding reduces wrong decisive verdicts and that the explicit state is not a better filter than calibrated confidence. It cannot show any effect on human decisions or trust, generalisation beyond this slice, or a causal effect of the state on error; C and N are too small (\nPoolC{} and \nPoolN{}) for inferential claims.
+\runin{What this can and cannot establish.} At model level and on this slice, withholding reduces wrong decisive verdicts and the explicit state is not a better filter than calibrated confidence. It cannot show any effect on human decisions or trust, generalisation beyond this slice, or a causal effect of the state; C and N are too small (\nPoolC{} and \nPoolN{}) for inferential claims.
 
-\runin{Variants and exploratory checks (disclosed).} After the freeze, one alternative answer prompt (v3) was tested on the tuning set only under a rule fixed beforehand (adopt only if macro-F1 rises by at least 0.02 and the Supports-vs-Refutes AUROC also rises); it did not (macro-F1 \vThreeDF{}, AUROC \vThreeDAUROC{}) and was not adopted. A guard bug in the evaluation driver was fixed after the tag without changing any number. An unplanned, exploratory check found that on the \postN{} claims with a decisive state, the rule ``Supports$\to$S, Refutes$\to$R'' is right \postRuleAcc{} of the time against \postClfAcc{} for the classifier verdict, so the forced-verdict baseline is weak. Details: \texttt{docs/DEVIATIONS.md}.
+\runin{Variants and exploratory checks (disclosed).} After the freeze, an alternative answer prompt (v3) was tested on the tuning set only, under an adoption rule fixed beforehand (macro-F1 up by at least 0.02 and a higher Supports-vs-Refutes AUROC); it failed both (macro-F1 \vThreeDF{}, AUROC \vThreeDAUROC{}) and was not adopted. A guard bug in the evaluation driver was fixed after the tag without changing any number. An unplanned, exploratory check found that on the \postN{} claims with a decisive state, the rule ``Supports$\to$S, Refutes$\to$R'' is right \postRuleAcc{} of the time against \postClfAcc{} for the classifier, so the baseline is weak (\texttt{docs/DEVIATIONS.md}).
 
 %==========================================================================
 \section{Error Analysis, Trade-offs, Limitations and Ethics}\label{sec:limits}
 %==========================================================================
-\runin{Error analysis.} Of \unsafeErrTotal{} unsafe errors of the baseline, I sampled 8 per gold class (seeded) and read each with its questions, answers and snippets, assigning one type by hand (Table~\ref{tab:err}). The labels are one annotator's, with no agreement statistic. Evidence gaps dominate (\taxEv{} of \taxTotal{}): retrieval returns off-topic text, so most answers are Unverified (\unvPool\% of evaluation answers). Many Refuted and Conflicting claims are partly true or refuted on one detail, which six counts cannot express (\taxNua{}). The rest are answerer misreads (\taxMis{}), classifier outputs contradicting clear counts (\taxClf{}), and off-topic or inverted questions (\taxDec{} and \taxPol{}).
+\runin{Error analysis.} Of \unsafeErrTotal{} unsafe errors of the baseline, I sampled 8 per gold class (seeded) and read each with its questions, answers and snippets, assigning one type by hand (Table~\ref{tab:err}, Appendix~\ref{app:extra}). The labels are one annotator's, with no agreement statistic. The largest group is little usable evidence (\taxEv{} of \taxTotal{}): retrieval returns off-topic text, so most answers are Unverified (\unvPool\% of evaluation answers). For \taxEvGoldN{} of these the gold label is N, where little evidence is the right state and only the forced verdict is wrong. The next group is claims that are partly true or hinge on one detail, which six counts cannot express (\taxNua{}, of which \taxNuaGoldC{} are Conflicting). The rest are answerer misreads (\taxMis{}), classifier outputs contradicting counts that favour the other verdict (\taxClf{}), and off-topic or inverted questions (\taxDec{} and \taxPol{}).
 
-\begin{table}[t]
-  \centering\small
-  \caption{Error types among the sampled unsafe errors (one hand-assigned type per case).}
-  \label{tab:err}
-  \input{generated/tab_errors}
-\end{table}
+\runin{Successes and failures.} \emph{Success 1:} ``Melissa Francis is married to Wray Thorn'' (gold S) is answered S and kept, but only two of ten answers are not Unverified and the snippets come from celebrity-gossip pages: correct yet fragile. \emph{Success 2:} a claim about the median wealth ratio (gold R, because the sources give averages) gets the right verdict R while the state says Supports, from a near-empty count vector (8 of 10 answers Unverified). \emph{Failure 1:} ``Raffia Arshad is the first hijab-wearing court judge'' (gold S) has the correct state Supports, but the classifier outputs R at confidence 0.78, overriding counts that favour support (3 supporting against 1 refuting answer). \emph{Failure 2:} for the claim that the Trump administration disbanded the pandemic response team (gold S) an inverted question (``retain key members?''$\to$No) is counted as refuting, and a retrieved page even carries a fact-checker's verdict line. Among the sampled N errors the state was \evs{Insufficient} in \nSampledNIns{} of \nSampledN{} cases while the forced verdict was wrong, which is the intended behaviour.
 
-\runin{Successes and failures.} \emph{Success 1:} ``Melissa Francis is married to Wray Thorn'' (gold S) is answered S and kept, but on a single gossip page: correct yet fragile. \emph{Success 2:} a claim about the median wealth ratio (gold R, because the sources give averages) gets the right verdict R while the state says Supports. \emph{Failure 1:} ``Raffia Arshad is the first hijab-wearing court judge'' (gold S) has the correct state Supports, but the classifier outputs R at confidence 0.78, overriding clear counts. \emph{Failure 2:} for the claim that the Trump administration disbanded the pandemic response team (gold S) an inverted question (``retain key members?''$\to$No) is counted as refuting. Among the sampled N errors the state was \evs{Insufficient} in 5 of 8 cases while the forced verdict was wrong, which is the intended behaviour.
+\runin{Who is underserved.} Baseline unsafe errors per gold class are \unsafeZeroS\% (S), \unsafeZeroR\% (R), \unsafeZeroC\% (C) and \unsafeZeroN\% (N); P3 withholds most claims in every class. Claims with scarce or conflicting evidence, subtle details, composite statements or opinions are served worst, and the excluded sensitive topics were never tested.
 
-\runin{Who is underserved.} Per gold class, baseline unsafe errors are \unsafeZeroS\% (S), \unsafeZeroR\% (R), \unsafeZeroC\% (C) and \unsafeZeroN\% (N), and P3 withholds most claims in every class. Claims with scarce or conflicting evidence, subtle details, composite statements or opinions are served worst, and the excluded sensitive topics were never tested at all.
+\runin{Trade-offs.} P3 gives up three quarters of the answers to reduce unsafe errors, and a confidence threshold gives a better risk--coverage trade-off than the state in this pilot (Figure~\ref{fig:rc}). On this evidence I would keep the abstention mechanism, but not claim a benefit for the explicit state until it is rebuilt on stronger evidence and shown to beat a confidence threshold.
 
-\runin{Trade-offs.} Abstention exchanges coverage for safety: P3 gives up three quarters of the answers to reduce unsafe errors. A confidence threshold gives a better risk--coverage trade-off than the state in this pilot (Figure~\ref{fig:rc}). The proposed design is therefore not carried forward as is.
+\runin{Limitations.} Pilot slice (\nPool{} claims; one excluded after a failed decomposition); one 7B quantised model and prompt family, English only; retrieval is optimistic (store built from gold questions) yet still the bottleneck; no store dates and some residual fact-checking pages; broad exclusion filter; noisy gold labels; a pooled dev and train set, seen after this analysis; a weak baseline classifier (trained on \nTune{} claims); single-annotator error labels. No user study was run and no benefit to users is claimed.
 
-\runin{Limitations.} Pilot slice (\nPool{} claims, one claim excluded after a failed decomposition); one 7B quantised model, one prompt family, English only; retrieval is optimistic because the store is built from the benchmark's gold questions, yet still the bottleneck; no store dates; broad exclusion filter; noisy gold labels; the pooled set mixes dev and train claims; the evaluation claims count as seen after this analysis; the baseline classifier (trained on \nTune{} claims) is weak; error labels are single-annotator. No user study was run, and no claim of benefit to users is made.
-
-\runin{Ethics and safeguards.} \emph{Privacy and data:} public claims under CC BY-NC 4.0, no personal data collected, no human participants, no credentials in code. \emph{Safety:} the state \evs{Insufficient} mostly reflects that retrieval found nothing usable, not that no evidence exists; it should be read as ``no usable evidence retrieved'', never as an assertion about the claim. A wrong \evs{Refutes} could unfairly label a speaker, so verdicts need human oversight. \emph{Misuse:} an automatic ``refuted'' stamp or automated moderation would misuse a system with macro-F1 \mfPool; sensitive topics were excluded and the exclusion bias is reported. \emph{Mitigation:} abstention, model-level framing only, frozen protocol, and full disclosure of variants.
+\runin{Ethics and safeguards.} \emph{Privacy and data:} public claims from the dataset, some naming public figures, under CC BY-NC 4.0; no new personal data collected, no human participants, no credentials in code. \emph{Safety:} the state \evs{Insufficient} mostly reflects that retrieval found nothing usable, not that no evidence exists; it should be read as ``no usable evidence retrieved'', never as an assertion about the claim. A wrong \evs{Refutes} could unfairly label a speaker, so verdicts need human oversight. Withholding most verdicts also leaves most claims unchecked and shifts the work to human checkers, so abstention is a triage signal, not a safety guarantee. \emph{Misuse:} an automatic ``refuted'' stamp or automated moderation would misuse a system with macro-F1 \mfPool; sensitive topics were excluded and the exclusion bias is reported. \emph{Mitigation:} abstention, model-level framing only, frozen protocol, and full disclosure of variants.
 
 %==========================================================================
 \section{Reproducibility and Contribution Statements}\label{sec:repro}
 %==========================================================================
-Code, configuration, seeds, per-claim counts, predictions, tables and figures are in the code package (tag \texttt{stp1-frozen} plus the later commits listed in \texttt{docs/DEVIATIONS.md}). The README gives the environment (Python 3.12, pinned requirements, Ollama and the model digest), how to obtain the data, and the commands. All tables and figures are regenerated from the committed counts with \texttt{python -m src.run\_eval} (about 25 seconds, no data or GPU needed), and every number in this report is a macro generated from \texttt{results/} by \texttt{src/make\_report\_tables.py}. Known limitations are in Section~\ref{sec:limits} and the README.
+Code, configuration, seeds, per-claim counts, predictions, tables and figures are in the code package (tag \texttt{stp1-frozen} plus later commits logged in \texttt{docs/DEVIATIONS.md}). The README gives the environment, data access and commands. \texttt{python -m src.run\_eval} regenerates every table and figure from the committed counts (about 25 seconds, no data or GPU), and every number in this report is a macro generated from \texttt{results/} by \texttt{src/make\_report\_tables.py}.
 
 \runin{Contribution statement.} Individual project. Design, implementation, evaluation, analysis and writing: Taha Mehdi.
 
@@ -172,7 +158,21 @@ Code, configuration, seeds, per-claim counts, predictions, tables and figures ar
 \bibliography{refs}
 
 \appendix
-\section{Additional Results}
+\section{Additional Results}\label{app:extra}
+\begin{table}[h]
+  \centering\small
+  \caption{Technical metrics on the evaluation claims (baseline classifier, no abstention).}
+  \label{tab:tech}
+  \input{generated/tab_technical}
+\end{table}
+
+\begin{table}[h]
+  \centering\small
+  \caption{Error types among the sampled unsafe errors (one hand-assigned type per case).}
+  \label{tab:err}
+  \input{generated/tab_errors}
+\end{table}
+
 \begin{table}[h]
   \centering\small
   \caption{Evidence state versus verdict and gold label (pooled evaluation claims).}

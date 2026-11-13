@@ -37,7 +37,8 @@ isotonic calibration, withhold if calibrated confidence < tau = 0.25 **or** stat
 | `docs/DESIGN_LOCK.md` | Definitions, policies, tuning rules and interpretation rules, fixed before any result |
 | `docs/DEVIATIONS.md` | Chronological log of every departure from the plan, every variant tried and every post-freeze change |
 | `docs/PROMPTS.md` | Prompt versions and change log |
-| `report/` | Report source (`TahaMehdi_STP1_Report.tex`, `refs.bib`), generated numbers and tables (`generated/`), figures (`figures/`); compile on Overleaf (ACM `acmart`) |
+| `docs/NUMBER_AUDIT.md` | How every number in the report is traced to `results/`, and the few hand-written constants |
+| `report/` | Report source (`TahaMehdi_STP1_Report.tex`, `refs.bib`), the compiled `TahaMehdi_STP1_Report.pdf`, generated numbers and tables (`generated/`), figures (`figures/`); compile on Overleaf (ACM `acmart`) |
 | `PLAN.md` | Current plan and status |
 
 Not included: the raw dataset and knowledge stores (`data/raw/`), the LLM response caches (`cache/`), the virtual environment. See section 4.
@@ -99,6 +100,7 @@ python -m src.run_pipeline --split eval_train              # 400 held-out train 
 python -m src.run_eval
 python -m src.error_analysis                               # needs the caches and data/raw; writes the worksheet and sample
 python -m src.reference_checks                             # needs data/raw/train.json
+python -m src.leakage_check                                # exploratory scan for residual fact-checking text in snippets; needs the caches
 python -m src.compare_variants --base results/tuning_k3/counts.csv --variant results/tuning_k3_ans-v3/counts.csv --name answer_v3
 ```
 LLM calls are cached (`cache/*.jsonl`, append-only, keyed by claim, stage, prompt version, model digest, context size, k and question), so an interrupted run resumes where it stopped.
@@ -134,6 +136,7 @@ A fresh LLM run may differ slightly (floating-point and GPU non-determinism) fro
 - Pilot slice: 749 evaluated claims (one failed decomposition excluded), well below the planned scale of the full project; rare classes (Conflicting 50, Not Enough Evidence 57) are far too small for inferential claims.
 - The evaluation pool mixes dev and train claims; dev-only and train-held-out subsets are reported next to the pooled result. After inspection the evaluation claims count as "seen".
 - Model-level proxy only: no user study, no human decision data. No claim of benefit to users is made.
+- Leakage control is imperfect: a post-hoc scan (`src/leakage_check.py`) found fact-checking pages that the domain blocklist missed in at least 10 of 749 evaluation claims (1.3%, a lower bound).
 - Evidence is the main bottleneck: about 73% of evaluation answers are Unverified. Retrieval is sentence-level BM25 over a store built from the benchmark's gold questions (so retrieval is optimistic), with no dates in the store (a URL-date filter and a fact-checking-domain blocklist limit leakage).
 - One 7B quantised model, one prompt family, English only, broad keyword exclusions (sensitive topics, non-English claims) that also remove some benign claims.
 - The forced-verdict baseline (balanced gradient boosting on six counts, trained on 400 claims) is weak; an exploratory, not pre-set check shows the plain rule "Supports -> S, Refutes -> R" beats it on claims with a decisive state.

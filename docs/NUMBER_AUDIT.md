@@ -14,6 +14,7 @@ Method. Every result number in `report/TahaMehdi_STP1_Report.tex` is a macro fro
 | CC BY-NC 4.0, train claims 0-999 downloaded, 1000-3067 reserved | `data/SOURCES.md`; `tests/test_splits.py` |
 | 15 bins, 10-fold cross-validation, 95% intervals | `docs/DESIGN_LOCK.md` section 2; `results/tables/information_value.csv` (`cv_splits` = 10) |
 | 8 sampled errors per gold class | `src/error_analysis.py` (`SAMPLE_PER_CLASS`) |
-| confidence 0.78 for the Raffia Arshad case; 5 of 8 sampled N errors in state Insufficient | `results/error_analysis/sample.csv` and `worksheet.md` (cases train-666; dev-192, dev-229, dev-458, dev-82, train-324, train-438, train-714, train-847) |
+| case-study details: confidence 0.78 (train-666); 3 supporting vs 1 refuting answer (train-666: f_no = 3, t_no = 1); 2 of 10 non-Unverified answers (dev-301); 8 of 10 Unverified (dev-112) | `results/error_analysis/sample.csv` (counts and confidences) and `worksheet.md` |
+| "5 of 8 sampled N errors in state Insufficient", 5 of 11 evidence cases gold N, 6 of 8 nuance cases Conflicting, 10 of 749 leakage claims | now macros (`nSampledNIns`, `nSampledN`, `taxEvGoldN`, `taxNuaGoldC`, `leakClaims`) generated from `results/error_analysis/` and `results/leakage_check.json` |
 | Python 3.12; about 25 seconds for `python -m src.run_eval` | `README.md` section 3; measured on the author's laptop on 14 Nov 2026 |
 | Student ID, course codes, year | title block, copied from the proposal |

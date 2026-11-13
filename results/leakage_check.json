@@ -1,0 +1,33 @@
+{
+  "scope": "evaluation claims, top-k snippets per question, frozen retrieval cache",
+  "k": 3,
+  "claims": 749,
+  "claims_with_marker": 10,
+  "share_of_claims": 0.01335113484646195,
+  "snippets": 22470,
+  "snippets_with_marker": 42,
+  "text_markers": [
+    "^\\s*FULL CLAIM\\b",
+    "^\\s*Verdict\\s*:",
+    "^\\s*Claim\\s*:\\s"
+  ],
+  "url_markers": [
+    "healthfeedback\\.org",
+    "sciencefeedback",
+    "skeptics\\.stackexchange\\.com",
+    "/claimreview/"
+  ],
+  "note": "lower bound; crude markers; exploratory; no pipeline parameter changed",
+  "flagged_uids": [
+    "dev-33",
+    "dev-48",
+    "dev-172",
+    "dev-445",
+    "train-81",
+    "train-85",
+    "train-105",
+    "train-326",
+    "train-458",
+    "train-825"
+  ]
+}

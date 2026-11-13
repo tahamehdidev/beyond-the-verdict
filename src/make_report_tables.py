@@ -224,6 +224,19 @@ def main() -> int:
     for code, nm in (("EV", "Ev"), ("NUA", "Nua"), ("MIS", "Mis"), ("CLF", "Clf"), ("DEC", "Dec"), ("CONS", "Cons"), ("POL", "Pol"), ("GOLD", "Gold")):
         macro("tax" + nm, str(int(tx.get(code, 0))))
     macro("taxTotal", str(int(tx.sum())))
+    lab = pd.read_csv(ROOT / "results/error_analysis/labels.csv")
+    smp = pd.read_csv(ROOT / "results/error_analysis/sample.csv")
+    errs = lab.merge(smp[["uid", "role", "gold_name", "state_name"]], on="uid")
+    errs = errs[errs["role"] == "sampled_error"]
+    macro("taxEvGoldN", str(int(((errs.error_type == "EV") & (errs.gold_name == "N")).sum())))
+    macro("taxNuaGoldC", str(int(((errs.error_type == "NUA") & (errs.gold_name == "C")).sum())))
+    n_err = errs[errs.gold_name == "N"]
+    macro("nSampledN", str(len(n_err)))
+    macro("nSampledNIns", str(int((n_err.state_name == "Insufficient").sum())))
+    leak = json.loads((ROOT / "results/leakage_check.json").read_text(encoding="utf-8"))
+    macro("leakClaims", str(leak["claims_with_marker"]))
+    macro("leakShare", pct(leak["share_of_claims"], 1))
+    macro("leakSnips", str(leak["snippets_with_marker"]))
     macro("bootN", str(cfg["bootstrap"]["n"]))
     macro("modelDigest", summ["frozen_config"]["model_digest"][:12])
 
@@ -276,7 +289,7 @@ def main() -> int:
         "\\begin{tabular}{@{}lrrrr@{}}\n\\toprule\nPredicted state & Claims & Share (\\%) & Verdict correct (\\%) & Gold S / R / C / N \\\\\n\\midrule\n" +
         "\n".join(srows) + "\n\\bottomrule\n\\end{tabular}\n", encoding="utf-8")
 
-    names = {"EV": "Evidence gap", "NUA": "Claim nuance beyond six counts", "MIS": "Answerer misreads snippet", "CLF": "Classifier contradicts clear counts",
+    names = {"EV": "Little usable evidence", "NUA": "Claim nuance beyond six counts", "MIS": "Answerer misreads snippet", "CLF": "Classifier contradicts clear counts",
              "DEC": "Off-topic or missing questions", "CONS": "Answerer too conservative", "POL": "Question polarity or negation", "GOLD": "Gold label hard to defend"}
     erows = [f"{names[k_]} & {int(v)} \\\\" for k_, v in tx.sort_values(ascending=False).items()]
     (OUT / "tab_errors.tex").write_text("\\begin{tabular}{@{}lr@{}}\n\\toprule\nError type & Cases (of " + str(int(tx.sum())) + ") \\\\\n\\midrule\n" + "\n".join(erows) +
