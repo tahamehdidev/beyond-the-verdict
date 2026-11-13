@@ -1,5 +1,5 @@
-# STP1 configuration. Values marked TBD are filled by the phase named in the comment.
-# Evaluation scripts must refuse to run unless frozen: true.
+# STP1 configuration, FROZEN (git tag stp1-frozen). Values below were chosen on the tuning set only by `python -m src.tune --apply`.
+# Evaluation scripts refuse to run unless frozen: true. Any change after the tag must be logged in docs/DEVIATIONS.md.
 frozen: true            # set at the freeze (Phase 4, src/tune.py --apply); git tag stp1-frozen. Any later change needs a logged deviation
 
 seeds:

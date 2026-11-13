@@ -1,6 +1,6 @@
 # Design lock (STP1 pilot)
 
-Written 13 Nov 2026 before any pipeline output exists. This file fixes definitions, rules and comparisons. Changes after the freeze go to `DEVIATIONS.md`.
+Written 13 Nov 2026 before any pipeline output existed (sections 1-7 are the original pre-registration, kept as written; the outcome notes marked "Outcome" were added afterwards). This file fixes definitions, rules and comparisons. Changes after the freeze go to `DEVIATIONS.md`.
 Everything here is a model-level proxy design. None of it establishes a benefit for human users.
 
 ## 1. Task and mechanism
@@ -41,6 +41,7 @@ Everything here is a model-level proxy design. None of it establishes a benefit 
 5. tau (corrected 13 Nov before any result existed; the first draft read "smallest", which would pick a threshold that withholds almost nothing): the LARGEST value on a 0.05 grid (0.05, 0.10, ..., 0.95) for which the coverage of the tau-only policy P1 on the tuning set's cross-validated calibrated confidences is at least 0.5, i.e. the most conservative threshold that still answers at least half of the claims. If no grid value reaches 0.5 coverage, tau = 0.05. The coverage of the proposed policy P3 will be lower (state-based withholding adds to it); that cost is reported, not tuned away.
 6. Ties anywhere: choose the simpler option.
 After tuning: write chosen values to `config.yaml`, set `frozen: true`, commit, tag `stp1-frozen`.
+**Outcome (14 Nov 2026):** `python -m src.tune --apply` chose k=3, gradient boosting, m=2, isotonic calibration, tau=0.25 (candidate scores in `results/tuning_selection/`). The k=3 vs k=5 choice for logistic regression was a near-tie (macro-F1 0.2438 vs 0.2437); the rule was applied literally. Calibration candidates were compared on cross-fitted confidences (the calibrator never scored a claim it was fitted on).
 
 ## 5. Data decisions
 - Splits (all stratified by label, seeded, drawn after the exclusion filter): tuning = 400 train claims with index 0-999 (the downloaded knowledge store); evaluation = 350 dev claims (`eval`) + 400 held-out train claims from the same index range, not in the tuning sample (`eval_train`); smoke = 20 claims inside the tuning sample. Final sizes and the pooled-evaluation rules are in section 8; sets are disjoint (checked by `tests/test_splits.py`).
@@ -56,7 +57,7 @@ After tuning: write chosen values to `config.yaml`, set `frozen: true`, commit, 
 
 ## 7. Reporting rules
 - Pilot slice, not the final evaluation. Every number from `results/`. Items not run are labelled "not run".
-- Optional analyses (A5 closed-book, A1 oracle evidence, prompt paraphrase, evidence recall) are listed in `results/ablations_status.csv` as run or not run.
+- Optional analyses (A5 closed-book, A1 oracle evidence, prompt paraphrase, evidence recall) and every extra check are listed in `results/ablations_status.csv` as run or not run.
 - Single annotator for error analysis; no kappa is reported unless a re-label is actually done.
 
 ## 8. Pilot evaluation design and reserved claims (decided 13 Nov 2026, before any evaluation output exists)
@@ -66,3 +67,4 @@ After tuning: write chosen values to `config.yaml`, set `frozen: true`, commit, 
 - **This is a pilot.** The 750 evaluation claims count as "seen" once any evaluation output is inspected. If the main project changes anything (prompts, model, k, m, classifier, calibration, tau), it must re-tune on new claims, re-freeze under a new tag, and evaluate on claims that were not seen in STP1.
 - **Reserved, must stay untouched:** train claims 1000-3067 (their knowledge stores are not downloaded). No split, run, or inspection may involve them until the final evaluation. `tests/test_splits.py` fails if any sampled train claim has index above 999.
 - The pooled design departs from "evaluation = dev only"; logged in DEVIATIONS.md.
+- **Outcome (14 Nov 2026):** `eval` 350/350 and `eval_train` 399/400 claims completed (`train-344` failed decomposition), so 749 claims were evaluated (S 201, R 441, C 50, N 57).
