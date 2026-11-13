@@ -1,0 +1,37 @@
+uid,error_type,note
+dev-202,CLF,counts 5/0/0 and 0/2/3 clearly support; state Supports; gradient boosting still outputs Refutes
+dev-31,CLF,counts point to Supports (state Supports); verdict Refutes; one answer misread (Q2) but margin still positive
+dev-66,MIS,"entity confusion: snippets about World Food Program USA chairmanship answered No for ""chairman of WFP"""
+train-105,MIS,"answerer treats the fact-check headline ""FULL CLAIM"" as evidence; Yes to inverted comparison questions"
+train-305,CONS,"relevant snippet ""Azerbaijan Threatens to Target Armenia's Nuclear Power Plant"" retrieved but 8 of 10 answers Unverified"
+train-690,CLF,counts 3/0/2 and 0/3/2 strongly support; state Supports; verdict Refutes (withheld by confidence)
+train-71,DEC,"irrelevant question (""Did Trump sign the ACA?"" -> No) counted as refuting evidence; false-frame questions off-topic"
+train-978,EV,the 14-hour detail never retrieved; only the dog-walking-ban headline found
+dev-122,DEC,composite claim; no question isolates the false part (shooter's affiliation); most answers Unverified
+dev-400,EV,"retrieval returns off-topic text (veterans, Bivens, models); refutation needs reasoning"
+dev-71,MIS,"answerer swaps imports and exports: snippet says imports fell 27.63%, exports rose 27%; Q1/Q4 answered Yes"
+train-133,EV,all but two answers Unverified; state Refutes was correct but verdict Supports
+train-229,POL,"double-negation false-frame questions (""Have there been no reports...?"" -> No) counted as support"
+train-269,MIS,2018 Dr Pepper article answered Yes to a 2020 question (temporal mismatch); gold refutes by absence of any report
+train-856,EV,evidence thin (state Refutes right); verdict Supports at low confidence
+train-913,NUA,facts supported but the claim's inference (vaccine does not work because flu persists) is false
+dev-360,EV,all true-frame answers Unverified; retrieval finds generic unlicensed-staff pages
+dev-448,NUA,cherry-picking: the missed hearing is true (state Supports) but misleading; gold Conflicting
+train-137,NUA,partly true: built 1930 and rebuilt 1996; evidence supports both parts
+train-327,EV,policy claim; retrieval mostly irrelevant; gold depends on an exception clause
+train-358,NUA,bubonic vs pneumonic plague nuance; state Mixed is consistent with gold Conflicting
+train-499,NUA,some can claim and some cannot; state Mixed matches gold Conflicting; verdict Refutes wrong
+train-55,NUA,wedding was officiated but gold Conflicting for the exact setting; state Supports
+train-786,NUA,Biden attacked and Pelosi attack unrelated to pandemic; evidence supports only part
+dev-192,GOLD,"opinion claim (""makes no sense"") that evidence cannot settle; gold Not Enough Evidence"
+dev-229,EV,evidence insufficient; state Insufficient matches gold Not Enough Evidence; forced verdict Refutes wrong
+dev-458,EV,evidence insufficient; state Insufficient matches gold; forced verdict Refutes wrong
+dev-82,DEC,off-topic false-frame questions (traffic accidents) answered Yes and counted
+train-324,EV,evidence insufficient; state Insufficient matches gold; forced verdict Refutes wrong
+train-438,NUA,composite claim: two of four treaties supported; others unverified; gold Not Enough Evidence
+train-714,EV,evidence insufficient; state Insufficient matches gold; forced verdict Refutes wrong
+train-847,EV,evidence insufficient; state Insufficient matches gold; forced verdict Refutes wrong
+dev-301,SUCCESS,correct Supports verdict kept by P3 but evidence is a single gossip page: fragile
+dev-112,SUCCESS,correct Refutes verdict while state is Supports (wrong); gold hinges on median vs mean wealth
+train-666,FAILURE,state Supports correct but verdict Refutes at confidence 0.78; Q0 date question answered No
+train-81,FAILURE,"true-frame question ""retain key members?"" answered No supports the claim but is counted as refuting; polarity"

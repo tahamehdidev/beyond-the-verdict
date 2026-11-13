@@ -1,0 +1,14 @@
+analysis,status,evidence,note
+A4 mechanism check: policies P0-P5 on the frozen predictions,run,results/tables/policies.csv; results/tables/policy_differences.csv; results/tables/information_value.csv,pre-set in docs/DESIGN_LOCK.md section 3 and 6
+Information value of the state beyond confidence (AUROC and Brier),run,results/tables/information_value.csv,diagnostic only
+Error analysis (32 sampled unsafe errors + 4 case studies),run,results/error_analysis/,single-annotator draft labels; author review pending
+Post-hoc check: rule verdict (state) vs classifier verdict on decisive-state claims,run (exploratory; not pre-set),results/error_analysis/posthoc_state_vs_verdict.csv,reported as exploratory
+Answer prompt v3 on the tuning set,run; not adopted,results/tuning_selection/variant_answer_v3.json,adoption rule fixed before the run (docs/DEVIATIONS.md)
+k grid 3 / 5 / 8 on the tuning set,run,results/tuning_selection/k_classifier.csv,
+Crude gold-answer count reference and AUROC by k,run,results/tuning_selection/reference_checks.json,"not an oracle run of the pipeline"
+A1 oracle evidence (gold evidence given to the answerer),not run,,proposed for the main project
+A5 closed-book control (answerer without snippets),not run,,optional; only if time remains
+Prompt paraphrase robustness,not run,,
+Evidence recall against gold sources,not run,,proposed for the main project
+Multiple seeds / repeated LLM runs,not run,,temperature 0 with fixed seed; LLM outputs are deterministic per cache key
+Human evaluation or user study,not run,,out of scope for STP1; no user benefit is claimed

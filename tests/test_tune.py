@@ -5,10 +5,7 @@ import numpy as np
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from src.config import load_config  # noqa: E402
 from src.tune import apply_to_config, choose_max, choose_min, crossfit_confidence  # noqa: E402
-
-ROOT = Path(__file__).resolve().parents[1]
 
 
 def test_ties_go_to_the_first_row():

@@ -1,0 +1,9 @@
+error_type,n,withheld_by_P3,definition
+EV,11,9,"evidence gap: retrieval returned no relevant snippet, so most answers are Unverified"
+NUA,8,4,"claim nuance beyond six counts (partly true, cherry-picking, flawed inference)"
+MIS,4,3,"answerer misreads or mismatches the snippet (entity, number, date)"
+CLF,3,1,"classifier verdict contradicts clear counts (state Supports/Refutes, verdict the other)"
+DEC,3,2,decomposition: questions off-topic or no question tests the false part
+CONS,1,1,answerer conservative: a relevant snippet was retrieved but the answer is Unverified
+GOLD,1,0,gold label hard to defend or not checkable from evidence
+POL,1,1,question polarity or negation breaks the Yes/No-to-support mapping

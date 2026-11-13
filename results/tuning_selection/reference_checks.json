@@ -1,0 +1,72 @@
+{
+  "auroc_S_vs_R_margin_by_k": {
+    "3": 0.6521588012667027,
+    "5": 0.6446860276511932,
+    "8": 0.6510967791766432
+  },
+  "majority_class_accuracy": {
+    "tuning": 0.605,
+    "pooled_evaluation": 0.5887850467289719,
+    "majority_class": "R"
+  },
+  "answer_mix_by_gold_class": {
+    "tuning_k3": {
+      "S": {
+        "n_claims": 107,
+        "yes": 0.17289719626168223,
+        "no": 0.12897196261682242,
+        "unverified": 0.6981308411214954
+      },
+      "R": {
+        "n_claims": 242,
+        "yes": 0.1359504132231405,
+        "no": 0.1396694214876033,
+        "unverified": 0.7243801652892562
+      },
+      "C": {
+        "n_claims": 21,
+        "yes": 0.12857142857142856,
+        "no": 0.06190476190476191,
+        "unverified": 0.8095238095238095
+      },
+      "N": {
+        "n_claims": 30,
+        "yes": 0.11,
+        "no": 0.09666666666666666,
+        "unverified": 0.7933333333333333
+      }
+    },
+    "pooled_evaluation": {
+      "S": {
+        "n_claims": 201,
+        "yes": 0.1880597014925373,
+        "no": 0.12786069651741294,
+        "unverified": 0.6840796019900498
+      },
+      "R": {
+        "n_claims": 441,
+        "yes": 0.11746031746031746,
+        "no": 0.13718820861678005,
+        "unverified": 0.7453514739229025
+      },
+      "C": {
+        "n_claims": 50,
+        "yes": 0.126,
+        "no": 0.13,
+        "unverified": 0.744
+      },
+      "N": {
+        "n_claims": 57,
+        "yes": 0.0912280701754386,
+        "no": 0.08596491228070176,
+        "unverified": 0.8228070175438597
+      }
+    }
+  },
+  "gold_answer_count_reference_tuning": {
+    "macro_f1_mean_of_5_cv_repeats": 0.3769762039376029,
+    "accuracy_mean": 0.397,
+    "features": "gold Yes / No / Unanswerable / other answer counts per claim",
+    "caveat": "crude reference, not an oracle run of this pipeline"
+  }
+}
