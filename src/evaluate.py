@@ -86,18 +86,11 @@ def state_confusion(pred_state, gold_label) -> np.ndarray:
 # ----------------------------------------------------------------------------------------------
 
 
-def unsafe_error_rate(pred, gold, withheld, per_class: bool = False):
-    """Unsafe error: a DECISIVE verdict (S or R, not withheld) that differs from gold.
-    Returns the rate over all claims; with per_class=True a dict of the rate within each gold class as well."""
+def unsafe_mask(pred, gold, withheld) -> np.ndarray:
+    """Boolean mask of unsafe errors: a DECISIVE verdict (S or R, not withheld) that differs from gold.
+    The single definition used by the evaluation driver and the tests."""
     pred, gold, withheld = np.asarray(pred), np.asarray(gold), np.asarray(withheld, bool)
-    unsafe = (~withheld) & np.isin(pred, (S, R)) & (pred != gold)
-    if not per_class:
-        return float(unsafe.mean())
-    out = {"all": float(unsafe.mean())}
-    for k in range(4):
-        m = gold == k
-        out[k] = float(unsafe[m].mean()) if m.any() else float("nan")
-    return out
+    return (~withheld) & np.isin(pred, (S, R)) & (pred != gold)
 
 
 def coverage(withheld) -> float:

@@ -9,7 +9,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from src.evaluate import (  # noqa: E402
     accuracy, aurc, bootstrap_ci, brier_multiclass, build_policies, coverage, ece,
     information_value, macro_f1, per_class_prf, rate_matched_withhold, risk_coverage_curve,
-    selective_risk, state_accuracy, state_confusion, unsafe_error_rate,
+    selective_risk, state_accuracy, state_confusion, unsafe_mask,
 )
 
 
@@ -62,11 +62,11 @@ def test_unsafe_error_definition():
     gold = np.array([1, 1, 0, 0, 3, 0])
     none = np.zeros(6, bool)
     # unsafe: idx0 (S vs R), idx4 (R vs N). C/N verdicts are never decisive; correct ones are safe.
-    assert unsafe_error_rate(pred, gold, none) == pytest.approx(2 / 6)
+    assert unsafe_mask(pred, gold, none).mean() == pytest.approx(2 / 6)
     withheld = np.array([True, False, False, False, False, False])
-    assert unsafe_error_rate(pred, gold, withheld) == pytest.approx(1 / 6)
-    per = unsafe_error_rate(pred, gold, none, per_class=True)
-    assert per["all"] == pytest.approx(2 / 6) and per[1] == pytest.approx(1 / 2) and per[3] == pytest.approx(1.0)
+    assert unsafe_mask(pred, gold, withheld).mean() == pytest.approx(1 / 6)
+    mask = unsafe_mask(pred, gold, none)
+    assert mask[gold == 1].mean() == pytest.approx(1 / 2) and mask[gold == 3].mean() == pytest.approx(1.0)
 
 
 def test_coverage_and_selective_risk():

@@ -10,7 +10,7 @@ History of every departure from the proposal or earlier plans: `docs/DEVIATIONS.
 3. The evaluation pool (749 claims) is now "seen". The pilot is reported as a pilot; nothing is retuned on it.
 4. All human-benefit language is model-level proxy language. Never "verified". Never a user-benefit claim.
 5. No credentials in code or logs. Commits authored as the user (Taha Mehdi), no Claude attribution. Ask before every download and install.
-6. Do not edit `Project Proposal & Design Research Plan/` until the proposal-fix step at the end.
+6. The proposal lives outside this repository (`../Project Proposal/`, see its README); it is not part of the STP1 code package.
 7. Reserved: train claims 1000-3067 stay untouched (`tests/test_splits.py` enforces).
 
 ## 1. Status
@@ -31,7 +31,7 @@ History of every departure from the proposal or earlier plans: `docs/DEVIATIONS.
 | Git history | `summary.json` absolute paths removed from history (rewritten 14 Nov, tag `stp1-frozen` unaffected) and force-pushed; later commits pushed by the user |
 | Documentation review | done 14 Nov: paths, commands, hashes, dataset counts, model digest and result numbers in `README.md`, `PLAN.md`, `docs/`, `data/SOURCES.md`, `config.yaml` checked against the repository |
 | 6d Zip, upload | not started |
-| 7 Proposal honesty fix | not started (user will recheck the proposal first) |
+| 7 Proposal update | done 14 Nov (before submission, user's decision): stale status removed, STP1 pilot evidence and revised-state plan added, evaluation set re-specified (pilot-seen vs unseen claims), fallbacks and work plan updated, interface mock-up moved to the appendix. Moved out of the repo to `../Project Proposal/` (submission/, source/, overleaf/, archive/); final compiled PDF there |
 | Tests | 131 pass (`python -m pytest -q`) |
 
 ## 2. What the results say (details in `results/`, wording rules in section 5)

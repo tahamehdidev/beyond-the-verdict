@@ -21,7 +21,7 @@ import pandas as pd
 from src.config import ROOT, load_config, require_frozen
 from src.evaluate import (
     STATE_NAMES, accuracy, aurc, bootstrap_ci, brier_multiclass, build_policies, ece,
-    information_value, per_class_prf, risk_coverage_curve, state_accuracy, state_confusion,
+    information_value, per_class_prf, risk_coverage_curve, state_accuracy, state_confusion, unsafe_mask,
 )
 from src.predict import CLASS_NAMES, FrozenModel, fit_frozen, load_counts, proba_matrix, rel
 
@@ -66,7 +66,7 @@ def _policy_metrics(w, gold, verdict) -> np.ndarray:
     answered = ~w
     n_ans = int(answered.sum())
     sel = float((verdict[answered] != gold[answered]).mean()) if n_ans else np.nan
-    unsafe = answered & np.isin(verdict, (0, 1)) & (verdict != gold)
+    unsafe = unsafe_mask(verdict, gold, w)
     return np.array([n_ans / n, sel, unsafe.sum() / n, unsafe.sum() / n_ans if n_ans else np.nan])
 
 
@@ -139,7 +139,7 @@ def unsafe_by_gold(d: pd.DataFrame, policies: dict) -> list[dict]:
     rows = []
     for name in ("P0_forced", "P3_proposed"):
         w = policies[name]
-        unsafe = (~w) & np.isin(verdict, (0, 1)) & (verdict != gold)
+        unsafe = unsafe_mask(verdict, gold, w)
         for k, cname in enumerate(CLASS_NAMES):
             m = gold == k
             rows.append({"policy": name, "gold_class": cname, "n": int(m.sum()), "unsafe_errors": int(unsafe[m].sum()),

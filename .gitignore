@@ -9,8 +9,6 @@ __pycache__/
 # packaging and logs
 *.zip
 *.log
-# local-only material
-Project Proposal & Design Research Plan/
 # secrets
 .env
 *.key
