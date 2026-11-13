@@ -1,0 +1,17 @@
+pool,total,kept,rule,removed_any_match,S,R,C,N
+dev,500,363,(all claims),,122,305,38,35
+dev,500,363,armed_conflict,10,3,6,1,0
+dev,500,363,electoral_partisan,78,14,59,5,0
+dev,500,363,hate_violence,15,3,7,1,4
+dev,500,363,media_dependent,15,1,12,1,1
+dev,500,363,medical_advice,8,2,5,0,1
+dev,500,363,non_english,2,0,1,0,1
+dev,500,363,religion,24,3,20,1,0
+train_0_999,1000,800,(all claims),,249,626,54,71
+train_0_999,1000,800,armed_conflict,24,4,16,2,2
+train_0_999,1000,800,electoral_partisan,62,17,39,5,1
+train_0_999,1000,800,hate_violence,18,4,11,0,3
+train_0_999,1000,800,media_dependent,32,5,24,2,1
+train_0_999,1000,800,medical_advice,52,3,45,2,2
+train_0_999,1000,800,non_english,6,1,3,1,1
+train_0_999,1000,800,religion,22,5,15,1,1

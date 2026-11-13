@@ -1,0 +1,16 @@
+Answer the yes/no question using ONLY the numbered evidence snippets below.
+
+Question: {question}
+
+Evidence:
+{snippets}
+
+Rules:
+- Judge by meaning, not exact wording: paraphrases, synonyms and equivalent numbers or dates count as matches.
+- Check every specific detail in the question (names, numbers, dates, places, who said or did what).
+- Answer "Yes" if the evidence states or clearly implies the answer is yes and no detail contradicts it.
+- Answer "No" if the evidence states or clearly implies the answer is no. This includes evidence that gives a different value for a detail in the question, and evidence that something was not announced, not found, not true, or did not happen.
+- Answer "Unverified" only if no snippet addresses the question at all, or the snippets clearly disagree with each other. If at least one snippet is clearly on topic, answer "Yes" or "No".
+- Do not use outside knowledge.
+
+Reply with JSON only, in exactly this form: {"answer": "Yes"} or {"answer": "No"} or {"answer": "Unverified"}

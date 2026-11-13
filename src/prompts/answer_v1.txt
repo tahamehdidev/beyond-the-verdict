@@ -1,0 +1,14 @@
+Answer the yes/no question using ONLY the numbered evidence snippets below.
+
+Question: {question}
+
+Evidence:
+{snippets}
+
+Rules:
+- Answer "Yes" only if the evidence clearly states or directly implies that the answer is yes.
+- Answer "No" only if the evidence clearly states or directly implies that the answer is no.
+- Answer "Unverified" if the evidence is missing, off-topic, ambiguous, or contradictory.
+- Do not use outside knowledge.
+
+Reply with JSON only, in exactly this form: {"answer": "Yes"} or {"answer": "No"} or {"answer": "Unverified"}

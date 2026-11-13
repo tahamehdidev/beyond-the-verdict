@@ -1,0 +1,54 @@
+# Fact-checking domains removed from the knowledge store (leakage control, mirrors the anchor's blocklist idea).
+# One registered domain per line; a URL is blocked if its host equals or is a subdomain of an entry.
+# Lines starting with # are comments. In addition, data_loader.is_fact_check() blocks any host containing
+# "factcheck" / "fact-check" and any URL path containing /fact-check, /factcheck, /fact_check, /fact-checker.
+politifact.com
+snopes.com
+factcheck.org
+fullfact.org
+factcheck.afp.com
+leadstories.com
+boomlive.in
+altnews.in
+factly.in
+vishvasnews.com
+newschecker.in
+africacheck.org
+pesacheck.org
+checkyourfact.com
+truthorfiction.com
+misbar.com
+newsmeter.in
+logically.ai
+mythdetector.com
+mythdetector.ge
+lupa.uol.com.br
+maldita.es
+newtral.es
+correctiv.org
+fatabyyano.net
+dubawa.org
+thip.media
+factcrescendo.com
+teyit.org
+verafiles.org
+rappler.com
+vera.com.br
+aosfatos.org
+chequeado.com
+colombiacheck.com
+animalpolitico.com
+fakenewschecker.com
+hoax-slayer.net
+hoax-slayer.com
+metabunk.org
+poynter.org
+ifcncodeofprinciples.poynter.org
+tfc-taiwan.org.tw
+cofacts.tw
+factual.afp.com
+factuel.afp.com
+factchecker.in
+the-fact-checker.org
+checkpoint.sg
+sebenarnya.my

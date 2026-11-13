@@ -1,0 +1,7 @@
+k,classifier,cv_splits,macro_f1,accuracy,brier
+3,logistic_regression,5,0.243799,0.277500,0.737231
+3,gradient_boosting,5,0.269544,0.327500,0.749024
+5,logistic_regression,5,0.243710,0.280000,0.745275
+5,gradient_boosting,5,0.279357,0.355000,0.760894
+8,logistic_regression,5,0.237419,0.262500,0.742650
+8,gradient_boosting,5,0.260850,0.342500,0.766391

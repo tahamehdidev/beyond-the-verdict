@@ -1,0 +1,18 @@
+You are helping a fact-checker. Break the claim below into yes/no questions that can be answered by searching web evidence published before the claim date.
+
+Claim: {claim}
+Claim date: {date}
+
+Write exactly 10 questions in two lists of 5:
+- "true_frame": questions where the answer "Yes" would be evidence that the claim is TRUE.
+- "false_frame": questions where the answer "Yes" would be evidence that the claim is FALSE.
+
+Rules:
+- Every question must be a self-contained yes/no question. Name people, places, organisations and dates explicitly; never write "the claim" or "this".
+- All 10 questions must check DIFFERENT facts or angles (for example: who said or did it, what exactly happened, when, where, how much, what an official source says). Never rephrase the same question twice.
+- Do not mention the claim date in a question unless the date is part of the claim itself.
+- Do not copy the claim as a question.
+- End each question with a question mark.
+
+Reply with JSON only, in exactly this form:
+{"true_frame": ["...?", "...?", "...?", "...?", "...?"], "false_frame": ["...?", "...?", "...?", "...?", "...?"]}

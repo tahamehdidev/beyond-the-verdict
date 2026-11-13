@@ -1,0 +1,50 @@
+{
+  "base": {
+    "path": "results\\tuning_k3\\counts.csv",
+    "n_complete": 400,
+    "answers_parse_failed": 0,
+    "share_yes": 0.1435,
+    "share_no": 0.1295,
+    "share_unverified": 0.727,
+    "macro_f1_logistic_regression": 0.23287146021420177,
+    "macro_f1_logistic_regression_sd_over_repeats": 0.006138654405981208,
+    "macro_f1_gradient_boosting": 0.26399280022496596,
+    "macro_f1_gradient_boosting_sd_over_repeats": 0.006019308649010109,
+    "auroc_S_vs_R": 0.6521588012667027,
+    "state_accuracy_m1": 0.195,
+    "state_accuracy_m2": 0.24,
+    "state_accuracy_m3": 0.2175,
+    "state_share_m_frozen": {
+      "Supports": 0.2975,
+      "Refutes": 0.095,
+      "Mixed": 0.1325,
+      "Insufficient": 0.475
+    }
+  },
+  "variant": {
+    "path": "results\\tuning_k3_ans-v3\\counts.csv",
+    "n_complete": 400,
+    "answers_parse_failed": 0,
+    "share_yes": 0.16675,
+    "share_no": 0.23725,
+    "share_unverified": 0.596,
+    "macro_f1_logistic_regression": 0.2216601123798699,
+    "macro_f1_logistic_regression_sd_over_repeats": 0.00976401709656234,
+    "macro_f1_gradient_boosting": 0.2691250526552048,
+    "macro_f1_gradient_boosting_sd_over_repeats": 0.018529255372743803,
+    "auroc_S_vs_R": 0.6307252645400478,
+    "state_accuracy_m1": 0.155,
+    "state_accuracy_m2": 0.23,
+    "state_accuracy_m3": 0.24,
+    "state_share_m_frozen": {
+      "Supports": 0.3025,
+      "Refutes": 0.1375,
+      "Mixed": 0.2825,
+      "Insufficient": 0.2775
+    }
+  },
+  "delta_macro_f1_lr": -0.011211347834331864,
+  "delta_auroc_S_vs_R": -0.021433536726654823,
+  "rule": "adopt only if delta macro-F1 (LR, mean of 5 CV repeats) >= 0.02 and delta AUROC > 0",
+  "adopt": false
+}

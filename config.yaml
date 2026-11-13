@@ -1,0 +1,64 @@
+# STP1 configuration. Values marked TBD are filled by the phase named in the comment.
+# Evaluation scripts must refuse to run unless frozen: true.
+frozen: true            # set at the freeze (Phase 4, src/tune.py --apply); git tag stp1-frozen. Any later change needs a logged deviation
+
+seeds:
+  master: 20261112
+  split: 20261113
+  cv: 20261114
+  bootstrap: 20261115
+  clf: 20261116
+
+model:
+  tag: "qwen2.5:7b-instruct"
+  digest: "845dbda0ea48ed749caafd9e6037047aa19acfcfd82e704d7ca97d631a0b697e"   # 7.6B parameters, Q4_K_M quantisation, Ollama 0.40.16, read from /api/tags on 13 Nov 2026
+  temperature: 0
+  seed: 1
+  num_ctx: 4096          # prompts with k=5..8 snippets of <=500 chars fit; no truncation seen in the smoke run
+  num_predict_decompose: 600   # 20/20 smoke decompositions valid on the first attempt
+  num_predict_answer: 40       # answers are ~8 tokens; 0/200 parse failures in the smoke run
+  host: "http://127.0.0.1:11434"
+
+prompt_versions:
+  decompose: "v2"
+  answer: "v2"
+
+retrieval:
+  k: 3                   # chosen on the tuning set from {3,5,8} (results/tuning_selection/)
+
+state:
+  m: 2                   # chosen on the tuning set (state accuracy)
+
+classifier:
+  type: gradient_boosting   # logistic_regression | gradient_boosting; both use balanced class weights (fixed in src/classifier.py)
+
+calibration:
+  type: isotonic         # temperature | isotonic
+
+abstention:
+  tau: 0.25              # rule in DESIGN_LOCK section 4, item 5
+
+sizes:
+  smoke_n: 20
+  tuning_n: 400          # set after the Phase 3 speed test (13.4 s/claim): more rare-class examples for the classifier
+  eval_n: 350            # nearly all 363 eligible dev claims; never below 100
+  eval_train_n: 400      # held-out train 0-999 claims (never tuned on); pooled with dev for the pilot evaluation
+
+bootstrap:
+  n: 2000              # 95% percentile CIs (fixed in src/evaluate.py); read by the evaluation driver
+
+cv:
+  folds_tuning: 5
+  folds_rq1: 10
+
+paths:
+  splits: "data/splits"
+  cache: "cache"
+  results: "results"
+  dev_claims: "data/raw/dev.json"
+  train_claims: "data/raw/train.json"
+  dev_store_zip: "data/raw/dev_knowledge_store.zip"
+  train_store_zip: "data/raw/train_0_999.zip"
+
+data:
+  train_claim_index_max: 999      # train store covers claims 0-999 only (train_0_999.zip)

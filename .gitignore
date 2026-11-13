@@ -1,0 +1,16 @@
+# data and caches (CC-BY-NC, large)
+data/raw/
+cache/
+# environments
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+# packaging and logs
+*.zip
+*.log
+# local-only material
+Project Proposal & Design Research Plan/
+# secrets
+.env
+*.key

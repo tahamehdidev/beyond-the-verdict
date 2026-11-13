@@ -1,0 +1,21 @@
+{
+  "choice": {
+    "k": 3,
+    "classifier": "gradient_boosting",
+    "m": 2,
+    "calibration": "isotonic",
+    "tau": 0.25
+  },
+  "meta": {
+    "n_tuning_claims": 400,
+    "class_counts": {
+      "S": 107,
+      "R": 242,
+      "C": 21,
+      "N": 30
+    },
+    "cv_folds_requested": 5,
+    "cv_splits_used": 5,
+    "tau_policy_note": "largest grid value with P1 coverage >= 0.5 on cross-fitted calibrated confidences"
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "n": 20,
+  "uids": [
+    "train-58",
+    "train-66",
+    "train-82",
+    "train-114",
+    "train-129",
+    "train-168",
+    "train-213",
+    "train-225",
+    "train-439",
+    "train-496",
+    "train-598",
+    "train-605",
+    "train-629",
+    "train-756",
+    "train-798",
+    "train-802",
+    "train-873",
+    "train-933",
+    "train-938",
+    "train-996"
+  ],
+  "label_counts": {
+    "R": 12,
+    "S": 5,
+    "N": 2,
+    "C": 1
+  }
+}
