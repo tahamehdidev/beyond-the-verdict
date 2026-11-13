@@ -145,8 +145,8 @@ def main() -> int:
     macro("tuneCVsplits", str(sel["meta"]["cv_splits_used"]))
     lr = kc[kc.classifier == "logistic_regression"].set_index("k")["macro_f1"]
     gb = kc[kc.classifier == "gradient_boosting"].set_index("k")["macro_f1"]
-    macro("tuneFoneLRthree", f3(lr[3]))
-    macro("tuneFoneLRfive", f3(lr[5]))
+    macro("tuneFoneLRthree", f"{lr[3]:.4f}")
+    macro("tuneFoneLRfive", f"{lr[5]:.4f}")
     macro("tuneFoneGBthree", f3(gb[3]))
     macro("tuneAccGBthree", f3(float(kc[(kc.k == 3) & (kc.classifier == "gradient_boosting")]["accuracy"].iloc[0])))
     macro("tuneECEiso", f3(float(cal[cal.calibration == "isotonic"]["ece"].iloc[0])))
