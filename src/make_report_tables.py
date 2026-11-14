@@ -177,8 +177,11 @@ def main() -> int:
         macro("cov" + short, pct(pv(pname, "coverage")))
         macro("risk" + short, pct(pv(pname, "selective_risk")))
         macro("unsafe" + short, pct(pv(pname, "unsafe_rate_all")))
+        macro("ansUnsafe" + short, pct(pv(pname, "unsafe_per_answered")))
         macro("unsafe" + short + "Lo", pct(pv(pname, "unsafe_rate_all", col="ci_low")))
         macro("unsafe" + short + "Hi", pct(pv(pname, "unsafe_rate_all", col="ci_high")))
+    # reference: withholding a random share of the baseline answers at the same coverage as P3
+    macro("randRefPThree", pct(pv("P0_forced", "unsafe_rate_all") * pv("P3_proposed", "coverage")))
     for (a, b, short) in (("P3_proposed", "P0_forced", "ThreeZero"), ("P2_state_only", "P4a_conf_matched_to_P2", "TwoFourA"),
                           ("P3_proposed", "P4b_conf_matched_to_P3", "ThreeFourB")):
         for metric, mm in (("selective_risk", "Risk"), ("unsafe_rate_all", "Unsafe")):

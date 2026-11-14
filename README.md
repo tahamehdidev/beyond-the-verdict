@@ -87,7 +87,7 @@ python -m src.make_diagram
 python -m src.make_report_tables  # report/generated/numbers.tex and tables from results/ (every number in the report)
 python -m src.audit_report_numbers # independent recomputation of the headline report numbers
 ```
-Outputs: `results/tables/*.csv`, `results/figures/*`, `results/eval_final/{predictions.csv,summary.json}`. Reruns are byte-identical (bootstrap seed in `config.yaml`).
+Outputs: `results/tables/*.csv`, `results/figures/*`, `results/eval_final/{predictions.csv,summary.json}`. With the pinned versions in `requirements.txt` (Python 3.12.7), reruns are byte-identical (bootstrap seed in `config.yaml`); newer library versions can change the last digit and the intervals slightly.
 
 ### c) Full rerun from the raw data (needs `data/raw/`, Ollama and the model; about 9 GPU hours in total)
 ```bash

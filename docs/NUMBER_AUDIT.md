@@ -3,7 +3,7 @@
 Method. Every result number in `report/TahaMehdi_STP1_Report.tex` is a macro from `report/generated/numbers.tex` and every table is a generated file; both are written by `python -m src.make_report_tables` from `results/` only. Nothing in the report text is typed by hand except the specification constants below.
 
 1. **Independent recomputation.** `python -m src.audit_report_numbers` recomputes 30 headline numbers (accuracy, coverage, selective risk and unsafe-error rate of P0-P3, per-state sizes and verdict accuracy, per-class unsafe rates, answer mix, majority-class accuracy) directly from `results/eval_final/predictions.csv` and the counts files, without using `src/evaluate.py`, and compares them with the report macros. Result on 14 Nov 2026: all 30 match within rounding.
-2. **Bootstrap intervals** and paired differences come from `results/tables/*.csv` (written by `src/run_eval.py`, seeded, rerun byte-identical); they are not recomputed independently.
+2. **Bootstrap intervals** and paired differences come from `results/tables/*.csv` (written by `src/run_eval.py`, seeded, rerun byte-identical with the pinned versions and Python 3.12.7); they are not recomputed independently.
 3. **Hand-written numerals in the .tex** (specification constants, not results) and their sources:
 
 | Numeral in the text | Source |
